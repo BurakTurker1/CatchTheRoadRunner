@@ -3,8 +3,10 @@ package com.burakturker.catchtheroadrunner;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -33,6 +35,8 @@ public class MainActivity2 extends AppCompatActivity {
     ImageView[] imageArray;
     Runnable runnable;
     Handler handler;
+    SharedPreferences sharedPreferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class MainActivity2 extends AppCompatActivity {
         imageView9 = findViewById(R.id.imageView9);
         imageArray = new ImageView[] {imageView1,imageView2,imageView3,imageView4,imageView5,imageView6,imageView7,imageView8,imageView9};
         score =0;
+        sharedPreferences = this.getSharedPreferences("com.burakturker.CatchTheRoadRunner", Context.MODE_PRIVATE);
+
 
         HideRunner();
 
@@ -67,6 +73,7 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onFinish() {
                 // süre bitince
+                sharedPreferences.edit().putInt("LastScore",score).apply();
                 handler.removeCallbacks(runnable);
                 textViewTime.setText("time is up!");
                 for (ImageView image:imageArray){
@@ -120,9 +127,4 @@ public class MainActivity2 extends AppCompatActivity {
         handler.post(runnable);
 
     }
-
-
-
-
-
 }
